@@ -30,7 +30,7 @@ const makeMove = (index) => {
     if (checkWinner("X")) {
       winner.value = "X";
     } else if (checkDraw()) {
-      winner.value = "เสมอ"; // กำหนดว่าผู้เล่นเสมอ
+      winner.value = "เสมอ";
     } else {
       disablePlayer.value = true;
       setTimeout(() => {
@@ -51,7 +51,7 @@ const botMove = () => {
   if (checkWinner("O")) {
     winner.value = "O";
   } else if (checkDraw()) {
-    winner.value = "เสมอ"; // กำหนดว่าผู้เล่นเสมอ
+    winner.value = "เสมอ";
   }
   disablePlayer.value = false;
   currentPlayer.value = "X";
@@ -87,7 +87,7 @@ const checkDraw = () => {
 .main {
   width: 100%;
   display: flex;
-  flex-direction: column; /* เปลี่ยนเป็นแนวตั้ง */
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 }
@@ -106,11 +106,9 @@ const checkDraw = () => {
   border: 1px solid #000;
   font-size: 90px;
 }
-
 .winner {
   color: red;
 }
-
 .winner-message {
   text-align: center;
   font-size: 24px;
