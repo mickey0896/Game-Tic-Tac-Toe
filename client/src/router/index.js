@@ -21,6 +21,11 @@ const routes = [
     name: "main",
     component: () => import("../views/main.vue"),
   },
+  {
+    path: "/modal",
+    name: "modal",
+    component: () => import("../components/modal.vue"),
+  },
 ];
 
 const router = createRouter({

@@ -13,6 +13,22 @@
 
 <script setup>
 import Loader from "./components/loader.vue";
+import { useRouter } from "vue-router";
+import { onMounted } from "vue";
+
+const router = useRouter();
+const googleLogin = async () => {
+  const chackLogin = sessionStorage.getItem("email");
+  if (chackLogin) {
+    // router.push("/");
+  } else {
+    sessionStorage.clear();
+    router.push("/login");
+  }
+};
+onMounted(() => {
+  googleLogin();
+});
 </script>
 <style scoped>
 .logo {

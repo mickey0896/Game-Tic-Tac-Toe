@@ -29,7 +29,17 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
-  background-color: #f4b0a8;
+  /* For browsers that do not support gradients */
+  background: #00d9de;
+  /* For Safari 5.1 to 6.0 */
+  background: -webkit-linear-gradient(left top, #00d9de, #f902ff);
+  /* For Opera 11.1 to 12.0 */
+  background: -o-linear-gradient(bottom right, #00d9de, #f902ff);
+  /* For Firefox 3.6 to 15 */
+  background: -moz-linear-gradient(bottom right, #00d9de, #f902ff);
+  /* Standard syntax */
+  background: linear-gradient(to bottom right, #00d9de, #f902ff);
+
 }
 
 h1 {
@@ -65,7 +75,7 @@ button:focus-visible {
 #app {
   width: 100%;
   margin: 0 auto;
-  padding: 2rem;
+  /* padding: 2rem; */
   text-align: center;
 }
 

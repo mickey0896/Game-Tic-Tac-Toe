@@ -39,8 +39,10 @@ const callback = (response) => {
       email: decodedToken.email,
       picture: decodedToken.picture || "../assets/images/default-picture.jpg",
     };
+    sessionStorage.setItem("email", user.email);
+    sessionStorage.setItem("imgURL", user.picture);
     setTimeout(() => {
-      router.push(`/`);
+      router.push("/");
       $loader.hide();
     }, 1000);
   }
