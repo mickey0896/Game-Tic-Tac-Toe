@@ -35,7 +35,7 @@
               เมื่อจบเกม : <br />
               &nbsp; - หากคุณชนะ คุณจะได้รับ 1 คะแนน<br />
               &nbsp; - หากคุณแพ้ คุณจะเสีย 1 คะแนน<br />
-              &nbsp; - หากคุณเสมอ คุณจะเสีย 1 คะแนน<br />
+              &nbsp; - หากคุณเสมอ คุณจะไม่เสียคะแนน<br />
               &nbsp; - ชนะติดต่อกัน 3 ครั้ง จะได้รับ โบนัสพิเศษ 1 คะแนน<br />
               คะแนนที่สะสมจะถูกใช้เพื่อจัดอันดับผู้เล่น<br />
               เพื่อหาผู้ที่เป็น สุดยอดเจ้าแห่ง Tic Tac Toe!<br />
@@ -136,7 +136,10 @@ const getUsers = async (email) => {
 };
 
 const toGame = () => {
-  openModal("คุณพร้อมที่จะเริ่มเกม Tic-Tac-Toe ไหม?", `หากคุณต้องการเริ่มเกม คลิ๊กที่ปุ่ม "OK" เราจะพาคุณเข้าสู่เกม Tic-Tac-Toe`);
+  openModal(
+    "คุณพร้อมที่จะเริ่มเกม Tic-Tac-Toe ไหม?",
+    `หากคุณต้องการเริ่มเกม คลิ๊กที่ปุ่ม "OK" เราจะพาคุณเข้าสู่เกม Tic-Tac-Toe`
+  );
 };
 
 const openModal = (title, subtitle) => {
@@ -149,7 +152,7 @@ const openModal = (title, subtitle) => {
 };
 
 const handleModalOk = () => {
-  if (modal.title === "ยืนยัน") {
+  if (modal.title === "คุณพร้อมที่จะเริ่มเกม Tic-Tac-Toe ไหม?") {
     $loader.show();
     setTimeout(() => {
       $loader.hide();
