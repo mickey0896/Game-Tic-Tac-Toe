@@ -48,24 +48,34 @@ h1 {
 }
 
 button {
-  border-radius: 8px;
+  border-radius: 30px;
   border: 1px solid transparent;
-  padding: 0.6em 1.2em;
+  padding: 0.6em 2.5em;
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
+  color: #fff;
+  background: #fb8823;
+  /* For Safari 5.1 to 6.0 */
+  background: -webkit-linear-gradient(left top, #fb8823, #f56352);
+  /* For Opera 11.1 to 12.0 */
+  background: -o-linear-gradient(bottom right, #fb8823, #f56352);
+  /* For Firefox 3.6 to 15 */
+  background: -moz-linear-gradient(bottom right, #fb8823, #f56352);
+  /* Standard syntax */
+  background: linear-gradient(to bottom right, #fb8823, #f56352);
   cursor: pointer;
   transition: border-color 0.25s;
 }
 
 button:hover {
   border-color: #646cff;
+  opacity: 60%;
 }
 
 button:focus,
 button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+  /* outline: 4px auto -webkit-focus-ring-color; */
 }
 
 .card {

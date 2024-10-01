@@ -6,6 +6,7 @@
           <div class="modal-body text-center">
             <div class="loader-spinner mb-2"></div>
             <div>Loading...</div>
+            <div></div>
           </div>
         </div>
       </div>
@@ -33,7 +34,7 @@ const isLoading = computed(() => $loader.loader.isLoading);
 }
 
 .modal-dialog {
-  color: rgb(0, 0, 0);
+  color: rgb(255, 255, 255);
   z-index: 2;
   position: relative;
   margin: auto;
@@ -44,9 +45,9 @@ const isLoading = computed(() => $loader.loader.isLoading);
 .loader-spinner {
   width: 30px;
   height: 30px;
-  border: 2px solid rgb(0, 0, 0);
+  border: 2px solid rgb(255, 255, 255);
   border-radius: 50%;
-  border-top-color: #0001; /* ทำให้มองเห็นการหมุน */
+  border-top-color: rgba(255, 255, 255, 0.067);
   display: inline-block;
   animation: loaderspinner 0.7s linear infinite;
 }

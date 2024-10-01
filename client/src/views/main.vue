@@ -12,7 +12,7 @@
             "
             alt=""
           />
-          <b>Player 1</b>
+          <b>Player</b>
         </div>
         <div class="card-profile">
           <img
@@ -31,30 +31,47 @@
         <div
           v-for="(cell, index) in board"
           :key="index"
-          class="btn"
+          class="xo"
           :class="{ winner: winningCombination.includes(index) }"
           @click="makeMove(index)"
         >
           <b>{{ cell }}</b>
         </div>
       </div>
-      <div class="winner-message">ผู้ชนะ: {{ winner ? winner : "" }}</div>
+      <br />
       <button @click="resetGame">เริ่มเกมใหม่</button>
     </div>
   </div>
-  <Sidebar />
+  <Sidebar :list="rankingList" />
+  <Modal
+    ref="modalRef"
+    :title="modal.title"
+    :subtitle="modal.subtitle"
+    @modalOk="handleModalOk"
+  />
 </template>
 
 <script setup>
-import { ref, reactive } from "vue";
+import { ref, reactive, inject, onMounted } from "vue";
 import Sidebar from "../components/sidebar.vue";
+import Modal from "../components/modal.vue";
 
+const $api = inject("$api");
+const $loader = inject("$loader");
 const board = ref(Array(9).fill(null));
 const currentPlayer = ref("X");
 const winner = ref(null);
 const disablePlayer = ref(false);
 const winningCombination = ref([]);
+const modalRef = ref(null);
+const consecutiveWins = ref(0);
+const rankingList = ref([]);
+const modal = reactive({
+  title: "",
+  subtitle: "",
+});
 const profile = reactive({
+  email: sessionStorage.getItem("email"),
   imgURL:
     sessionStorage.getItem("imgURL") || "../assets/images/default-bot.png",
 });
@@ -62,20 +79,30 @@ const profile = reactive({
 const makeMove = (index) => {
   if (!board.value[index] && !winner.value && !disablePlayer.value) {
     board.value[index] = currentPlayer.value;
-
-    if (checkWinner(currentPlayer.value)) {
-      winner.value = currentPlayer.value; // บันทึกผู้ชนะ
-      disablePlayer.value = true; // หยุดการเล่น
-      return; // ออกจากฟังก์ชัน
+    if (checkWinner("X")) {
+      winner.value = "X";
+      disablePlayer.value = true;
+      if (consecutiveWins.value >= 2) {
+        consecutiveWins.value = 0;
+        cellEndGameAPI(profile.email, "ConsecutiveWin");
+      } else {
+        consecutiveWins.value += 1;
+        cellEndGameAPI(profile.email, "Win");
+      }
+      modal.title = "ยินดีด้วยคุณชนะ !!";
+      modal.subtitle = `ขณะนี้คุณสามารถเอาชนะบอทได้ ${consecutiveWins.value} ครั้ง หากคุณ<br/>สามารถชนะต่อเนื่องได้ 3 ครั้งติดต่อกัน <br/> คุณจะได้รับคะแนนโบนัสเพิ่มอีก 1 คะแนน <br/>
+      ถ้าคุณแพ้หรือเสมอ จำนวนครั้งที่ชนะติดต่อกันจะถูกนับใหม่<br/> คลิ๊กปุ่น "OK" เพื่อทำการเล่นต่อ`;
+      return;
     } else if (checkDraw()) {
       winner.value = "เสมอ";
+      modal.title = "เสียใจด้วยคุณเสมอ !!";
+      modal.subtitle = `ไม่เป็นไร! คุณยังมีโอกาสลุ้นในเกมต่อไป ลุยกันใหม่ในรอบหน้า!<br/> เนื่องจากคุณเสมอ คะแนนสะสมของคุณจะถูกนับใหม่<br/> คลิ๊กปุ่น "OK" เพื่อทำการเล่นต่อ`;
+      consecutiveWins.value = 0;
       currentPlayer.value = null;
-      disablePlayer.value = true; // หยุดการเล่น
-      return; // ออกจากฟังก์ชัน
+      disablePlayer.value = true;
+      return;
     }
-
-    // สลับผู้เล่นและให้บอททำการเคลื่อนไหว
-    disablePlayer.value = true; // ปิดการเล่นผู้เล่น
+    disablePlayer.value = true;
     currentPlayer.value = "O";
     setTimeout(() => {
       botMove();
@@ -87,24 +114,23 @@ const botMove = () => {
   const emptyCells = board.value
     .map((cell, index) => (cell === null ? index : null))
     .filter((index) => index !== null);
-
-  if (emptyCells.length === 0) return; // ไม่ให้บอททำอะไรถ้าบอร์ดเต็ม
-
+  if (emptyCells.length === 0) return;
   const randomIndex = emptyCells[Math.floor(Math.random() * emptyCells.length)];
   board.value[randomIndex] = "O";
-
   if (checkWinner("O")) {
     winner.value = "O";
-    disablePlayer.value = true; // หยุดการเล่น
-    return; // ออกจากฟังก์ชัน
+    disablePlayer.value = true;
+    modal.title = "เสียใจด้วยคุณแพ้";
+    modal.subtitle = `ไม่เป็นไร! คุณยังมีโอกาสลุ้นในเกมต่อไป ลุยกันใหม่ในรอบหน้า!<br/> เนื่องจากคุณแพ้ คะแนนสะสมของคุณจะถูกนับใหม่<br/> คลิ๊กปุ่น "OK" เพื่อทำการเล่นต่อ `;
+    consecutiveWins.value = 0;
+    cellEndGameAPI(profile.email, "Lose");
+    return;
   } else if (checkDraw()) {
     winner.value = "เสมอ";
-    disablePlayer.value = true; // หยุดการเล่น
-    return; // ออกจากฟังก์ชัน
+    disablePlayer.value = true;
+    return;
   }
-
-  // กลับไปยังผู้เล่น X
-  disablePlayer.value = false; // เปิดการเล่นผู้เล่น
+  disablePlayer.value = false;
   currentPlayer.value = "X";
 };
 
@@ -139,7 +165,60 @@ const resetGame = () => {
   winner.value = null;
   disablePlayer.value = false;
   winningCombination.value = [];
+  $loader.hide();
+  getUsersList();
 };
+
+const openModal = (title, subtitle) => {
+  modal.title = title;
+  modal.subtitle = subtitle;
+  if (modalRef.value) {
+    modalRef.value.openModal();
+  }
+};
+const cellEndGameAPI = async (email, endType) => {
+  $loader.show();
+  await $api
+    .EndGame({
+      email: email,
+      end: endType,
+    })
+    .then((res) => {
+      setTimeout(() => {
+        openModal(modal.title, modal.subtitle);
+        $loader.hide();
+      }, 1000);
+    })
+    .catch((err) => {
+      $loader.hide();
+      openModal("เกิดข้อผิดพลาด !!", "เกิดข้อผิดพลาด กรุณาติดต่อเจ้าหน้าที่");
+    });
+};
+
+const getUsersList = async () => {
+  $loader.show();
+  await $api
+    .GetUser()
+    .then((res) => {
+      $loader.hide();
+      rankingList.value = res.data.users;
+    })
+    .catch((err) => {
+      $loader.hide();
+      openModal("เกิดข้อผิดพลาด !!", "เกิดข้อผิดพลาด กรุณาติดต่อเจ้าหน้าที่");
+    });
+};
+const handleModalOk = () => {
+  if (modal.title !== "เกิดข้อผิดพลาด !!") {
+    $loader.show();
+    setTimeout(() => {
+      resetGame();
+    }, 1000);
+  }
+};
+onMounted(() => {
+  getUsersList();
+});
 </script>
 
 <style scoped lang="scss">
@@ -154,7 +233,7 @@ const resetGame = () => {
   display: grid;
   grid-template-columns: repeat(3, auto);
 }
-.btn {
+.xo {
   display: flex;
   justify-content: center;
   align-items: center;
