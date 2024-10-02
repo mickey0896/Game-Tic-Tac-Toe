@@ -18,7 +18,6 @@
       <div class="profile">
         <div v-if="profile.name" class="card-profile">
           <img
-            v-if="profile.imgURL"
             :src="profile.imgURL"
             alt="User Picture"
             class="active-img-profile"

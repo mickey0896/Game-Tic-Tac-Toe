@@ -12,7 +12,7 @@ app.use(morgan("dev"));
 app.use(cors());
 app.use(bodyParser.json({ limit: "10mb" }));
 
-// auto
+// auto /api
 readdirSync("./Routes").map((r) => app.use("/api", require("./Routes/" + r)));
 
 app.listen(5000, () => console.log("Server is Running 5000"));
