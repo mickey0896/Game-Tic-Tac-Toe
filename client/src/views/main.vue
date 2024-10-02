@@ -72,8 +72,7 @@ const modal = reactive({
 });
 const profile = reactive({
   email: sessionStorage.getItem("email"),
-  imgURL:
-    sessionStorage.getItem("imgURL") || "../assets/images/default-bot.png",
+  imgURL: sessionStorage.getItem("imgURL"),
 });
 
 const makeMove = (index) => {

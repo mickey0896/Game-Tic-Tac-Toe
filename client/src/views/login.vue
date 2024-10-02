@@ -17,11 +17,7 @@
       </div>
       <div class="profile">
         <div v-if="profile.name" class="card-profile">
-          <img
-            :src="profile.imgURL"
-            alt="User Picture"
-            class="active-img-profile"
-          />
+          <img :src="profile.imgURL" class="active-img-profile" />
           <div class="card-content">
             <b class="welcome-text">Welcome, <br />{{ profile.name }}!</b>
             <span class="welcome-message"
@@ -118,8 +114,6 @@ const getUsers = async (email) => {
     .GetUser({ email: email })
     .then((res) => {
       if (res.status == 200) {
-        console.log(res.data.user, "res.data.user");
-
         const user = res.data.user;
         sessionStorage.setItem("email", user.email);
         sessionStorage.setItem("name", user.name);
