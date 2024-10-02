@@ -1,6 +1,6 @@
 <template>
-  <div :class="['sidebar', { collapsed: isCollapsed }]">
-    <p @click="toggleSidebar">
+  <div :class="['sidebar', { collapsed: isCollapsed }]" @click="toggleSidebar">
+    <p >
       <img
         style="width: 65px"
         src="../assets/images/ranking/ranking.png"
@@ -122,7 +122,7 @@ const props = defineProps({
   },
 });
 const userName = ref(sessionStorage.getItem("name"));
-const isCollapsed = ref(true);
+const isCollapsed = ref(false);
 
 const sortedUsers = computed(() => {
   return [...props.list].sort((a, b) => b.score - a.score);
