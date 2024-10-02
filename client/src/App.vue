@@ -16,12 +16,11 @@ import Loader from "./components/loader.vue";
 import { useRouter } from "vue-router";
 import { onMounted } from "vue";
 
-
 const router = useRouter();
 const googleLogin = async () => {
   const chackLogin = sessionStorage.getItem("email");
   if (chackLogin) {
-    // router.push("/");
+    router.push("/login");
   } else {
     sessionStorage.clear();
     router.push("/login");

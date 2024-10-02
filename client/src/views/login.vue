@@ -88,7 +88,9 @@ const callback = (response) => {
     user.value = {
       name: decodedToken.name,
       email: decodedToken.email,
-      picture: decodedToken.picture || "../assets/images/default-picture.jpg",
+      picture: decodedToken.picture
+        ? decodedToken.picture
+        : "https://static.vecteezy.com/system/resources/thumbnails/011/675/374/small_2x/man-avatar-image-for-profile-png.png",
     };
     login();
   }
