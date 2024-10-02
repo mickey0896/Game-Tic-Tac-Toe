@@ -103,6 +103,10 @@ const makeMove = (index) => {
       consecutiveWins.value = 0;
       currentPlayer.value = null;
       disablePlayer.value = true;
+      setTimeout(() => {
+        openModal(modal.title, modal.subtitle);
+        $loader.hide();
+      }, 1000);
       return;
     }
     disablePlayer.value = true;
@@ -130,7 +134,15 @@ const botMove = () => {
     return;
   } else if (checkDraw()) {
     winner.value = "เสมอ";
+    modal.title = "เสียใจด้วยคุณเสมอ !!";
+    modal.subtitle = `ไม่เป็นไร! คุณยังมีโอกาสลุ้นในเกมต่อไป ลุยกันใหม่ในรอบหน้า!<br/> เนื่องจากคุณเสมอ คะแนนสะสมของคุณจะถูกนับใหม่<br/> คลิ๊กปุ่น "OK" เพื่อทำการเล่นต่อ`;
+    consecutiveWins.value = 0;
+    currentPlayer.value = null;
     disablePlayer.value = true;
+    setTimeout(() => {
+      openModal(modal.title, modal.subtitle);
+      $loader.hide();
+    }, 1000);
     return;
   }
   disablePlayer.value = false;
