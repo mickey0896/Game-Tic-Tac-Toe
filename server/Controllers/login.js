@@ -2,8 +2,14 @@ const User = require("../Models/user");
 
 exports.login = async (req, res) => {
   try {
-    const { name, email, imgURL } = req.body;
+    let { name, email, imgURL } = req.body;
     const score = 0;
+
+    if (!imgURL) {
+      imgURL =
+        "https://static.vecteezy.com/system/resources/thumbnails/011/675/374/small_2x/man-avatar-image-for-profile-png.png";
+    }
+
     const userEmail = await User.findOne({ email });
     if (userEmail) {
       const updatedUser = await User.findOneAndUpdate(
