@@ -4,11 +4,8 @@ exports.login = async (req, res) => {
   try {
     let { name, email, imgURL } = req.body;
     const score = 0;
-
-    if (!imgURL) {
-      imgURL =
-        "https://static.vecteezy.com/system/resources/thumbnails/011/675/374/small_2x/man-avatar-image-for-profile-png.png";
-    }
+    imgURL =
+      "https://img.freepik.com/premium-vector/cute-cartoon-cat-profile-avatar_1177872-8.jpg";
 
     const userEmail = await User.findOne({ email });
     if (userEmail) {
